@@ -1,4 +1,6 @@
 <?php
+namespace Catalog\REST;
+
 // Load dependencies
 require_once('RestResource.php');
 require_once('RestException.php');

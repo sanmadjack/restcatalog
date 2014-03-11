@@ -5,7 +5,75 @@ body {
     margin: 0;
     overflow-x: hidden;
     overflow-y: hidden;
-    background: ${background_color};
+    background: $(background_color);
 }
 
+/* Controls the position of the main menu */
+#menu {
+    position:absolute;
+    right:0;
+    top:0;
+    overflow: hidden;
+}
 
+/* Controls the position of the search box */
+#search {
+    position:absolute;
+    top:0;
+    right:200px;
+    height:$(header_height);
+    overflow: hidden;
+}
+
+#title {
+    position:absolute;
+    top:0;
+    left:0;
+    right:0;
+    height:$(header_height);
+    overflow: hidden;
+    padding-left:50px;
+    border-bottom: solid 1px $(divider_color);
+}
+
+#back {
+    position:absolute;
+    top:0;
+    left:0;
+    height:$(header_height);
+}
+
+#content {
+    position:absolute;
+    left:0;
+    right:0;
+    bottom:0;
+    overflow:auto;
+    top:$(header_height);
+    margin-top:1px;
+}
+
+#debug {
+    position:absolute;
+    left:0;
+    right:0;
+    bottom:0;
+    height:150px;
+    overflow:auto;
+    background-color:rgba(0,0,0,0.75);
+}
+#debug .info {
+    color: #33B5E5;
+}
+#debug .success {
+    color: #00CC00;
+}
+#debug .warning {
+    color: #FFBB33;
+}
+#debug .error {
+    color: #FF4444;
+}
+#debug .data {
+    color: #AA66CC;
+}

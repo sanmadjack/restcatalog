@@ -1,4 +1,6 @@
 <?php
+namespace Catalog\REST;
+
 class RestRequest {
     public $method;
     public $parms = array();

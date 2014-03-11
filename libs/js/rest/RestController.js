@@ -1,4 +1,5 @@
 function RestController(rest_url) {
+    var rest = this;
     this.url = rest_url;
     this.accepts = "application/json";
     this.dataType = "json";
@@ -9,7 +10,10 @@ function RestController(rest_url) {
 
     var code_handlers = [];
     
+    this.success = null;
     
+    this.error = null;
+        
  
     this.sendRequest = function(method,path) {
         var options = {};
@@ -30,17 +34,34 @@ function RestController(rest_url) {
         
         
         options.error = function(ajax,status,error) {
-            window.alert(status);
-            window.alert(error);
+            debug.error(status);
+            debug.error(error);
+            
+            if(rest.error!=null) {
+                rest.error(ajax,status,error);
+            } else {
+                window.alert(error);
+            }
         };
         
         options.success = function(data,status,ajax) {
-            window.alert(data);
-            window.alert(status);
+            debug.success("REST request succesful (" + ajax.status + " - " + status + ")");
+            if(data!=null) {
+                debug.data("Returned data:",data);
+            }
+
+            if(rest.success!=null) {
+                rest.success(data,status,ajax);
+            } else {
+                window.alert(status);
+                
+            }
         };
         
         var url = this.url + path;
         
+        debug.info("Sending REST request: " + url);
+        debug.data("REST request options:",options);
         $.ajax(url,options);
     };
  

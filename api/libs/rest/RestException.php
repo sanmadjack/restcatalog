@@ -1,4 +1,7 @@
 <?php
+namespace Catalog\REST;
+use Exception;
+
 class RestException extends Exception {
     public $code = 500;
     

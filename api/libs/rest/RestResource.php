@@ -1,4 +1,6 @@
 <?php
+namespace Catalog\REST;
+
 require_once("RestRequest.php");
 
 class RestResource {

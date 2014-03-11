@@ -1,5 +1,11 @@
 <?php
+namespace Catalog\Model;
+
 require_once("libs/rest/IRestEventHandler.php");
+
+use Catalog\REST\IRestEventHandler;
+
+
 
 class DataNuke implements IRestEventHandler {
     public function Trigger($req,$res) {

@@ -1,4 +1,6 @@
 <?php
+namespace Catalog\REST;
+
 class RestResponse {
     public $output = "";
     public $code = 200;

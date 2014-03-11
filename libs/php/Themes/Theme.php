@@ -1,5 +1,6 @@
 <?php
 namespace Catalog\Themes;
+use Exception;
 
 class Theme {
     private $name;
@@ -21,20 +22,20 @@ class Theme {
     private function loadThemeIni($theme,$is_parent = false) {
         $ini_file = 'themes/'.$theme.'/theme.ini';
         if(!is_readable($ini_file)) {
-            throw new \Exception("Theme config file for ".$theme." cannot be found or read");
+            throw new Exception("Theme config file for ".$theme." cannot be found or read");
         }
         
         $ini_array = parse_ini_file($ini_file, true);
         if($ini_array==false) {
-            throw new \Exception("Syntax error in theme config file for ".$theme);
+            throw new Exception("Syntax error in theme config file for ".$theme);
         }
         
         if(!array_key_exists("info",$ini_array)) {
-            throw new \Exception("Theme config file for ".$theme." does not contain theme info");
+            throw new Exception("Theme config file for ".$theme." does not contain theme info");
         }
         
         if(!array_key_exists("name",$ini_array["info"])) {
-            throw new \Exception("No name specifeid in theme config file for ".$theme);
+            throw new Exception("No name specifeid in theme config file for ".$theme);
         }
         $name = $ini_array["info"]["name"];
         
@@ -78,13 +79,13 @@ class Theme {
         if(is_string($output["data"])) {
             $data = $output["data"];
             $matches = array();
-            while(preg_match('|\${([^\s]+)}|',$data,$matches,PREG_OFFSET_CAPTURE)==1) {
+            while(preg_match('|\$\(([^\s]+)\)|',$data,$matches,PREG_OFFSET_CAPTURE)==1) {
                 $var_name = $matches[1][0];
                 $value = "";
                 if(array_key_exists($var_name,$this->variables)) {
                     $value = $this->variables[$var_name];
                 } else {
-                    throw new \Exception("Variable not found in theme config: ".$var_name);
+                    throw new Exception("Variable not found in theme config: ".$var_name);
                 }
 
                 $data = substr($data,0,$matches[0][1]).$value.substr($data,($matches[0][1]+strlen($matches[0][0])));
@@ -128,6 +129,10 @@ class Theme {
                         case "css":
                             $mime = "text/css";
                             break;
+                        case "txt":
+                            break;
+                        default:
+                            throw new Exception("Text format not recognized: ".$extension);
                     }
                     
                 }
@@ -151,7 +156,7 @@ class Theme {
                         $new_data = file_get_contents($file_path);
                         break;
                     default:
-                        throw new \Exception("The file type: ".$mime." is not process-able by the theme system");
+                        throw new Exception("The file type: ".$mime." is not process-able by the theme system");
                 }
 
                 if($appendable_text) {
@@ -180,7 +185,7 @@ class Theme {
                 
                 $output["mime"] = $mime;
             } else {
-                throw new \Exception("Cannot read file: ".$temp);
+                throw new Exception("Cannot read file: ".$temp);
             }
         }
         return $output;
