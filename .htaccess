@@ -1,0 +1,4 @@
+RewriteEngine On
+RewriteBase /
+# RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^themes/(.*)$ themes.php/$1 [L,QSA]
