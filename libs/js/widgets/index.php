@@ -1,17 +1,8 @@
 <?php
+require_once("../../php/Themes/FileCombiner.php");
 
-header("Content-type: application/javascript");
-
-$usable_files = array("AWidget.js","AInputWidget.js","TextInputWidget.js");
-
-
-
-foreach($usable_files as $file) {
-    echo '// '.$file."\n\n";
-    echo file_get_contents($file);
-    echo "\n\n";
-    
-}
+$output = new Catalog\Themes\FileCombiner(array("AWidget.js","AInputWidget.js","TextInputWidget.js"));
+$output->renderFile();
 
 
 ?>
