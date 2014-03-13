@@ -1,0 +1,1 @@
+INSERT INTO `log`(`level`, `message`) VALUES (@level,@message)

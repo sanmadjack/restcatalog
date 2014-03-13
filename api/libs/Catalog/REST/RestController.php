@@ -6,6 +6,8 @@ use Exception;
 $GLOBALS['start_time'] = microtime(true);
 
 class RestController {
+    use \Psr\Log\LoggerAwareTrait;
+    
     private $method;
     private $format;
     private $resource;
@@ -35,6 +37,8 @@ class RestController {
         if(!($resource instanceof RestResource)) {
             throw new Exception("Resource must be a RestResource object");
         }
+        $resource->setLogger($this->logger);
+        
         array_push($this->resources,$resource);
     }
     
@@ -90,10 +94,6 @@ class RestController {
         }
     }
     
-    // Three types of messages: auth, conneg, db and logic
-    public static function SendDebugMessage($type,$message) {
-        header('X-Debug-'. $type .': '.$message,false);
-    }
     public static function SetResponseCode($code) {
         if(!is_int($code)) {
             throw new Exception("The response code must be an integer");

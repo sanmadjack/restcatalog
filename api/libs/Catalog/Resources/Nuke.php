@@ -37,6 +37,8 @@ class Nuke implements IRestEventHandler {
     }
     
     private function createAllTables() {
+        $cmd = $this->db->createCommandFromFile("create","log");
+        $cmd->run();
         $cmd = $this->db->createCommandFromFile("create","classes");
         $cmd->run();
         $cmd = $this->db->createCommandFromFile("create","fields");

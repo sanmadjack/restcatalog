@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS `log` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `level` enum('DEBUG','INFO','NOTICE','WARNING','ERROR','CRITICAL','ALERT','EMERGECY') NOT NULL,
+  `message` longtext NOT NULL,
+  PRIMARY KEY (`id`)
+) DEFAULT CHARSET=utf8;

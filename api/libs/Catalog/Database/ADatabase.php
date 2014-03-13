@@ -5,6 +5,8 @@ use Exception;
 
 // TODO: Fix the capitalizations of these functions
 abstract class ADatabase {
+    use \Psr\Log\LoggerAwareTrait;
+    
     public $server;
     public $user;
     public $password;
@@ -25,14 +27,20 @@ abstract class ADatabase {
 
     public abstract function GetLastID();
 
-    public function CreateCommand($sql = null) {
-        return new SQLCommand($this,$sql);
+    public function createCommand($sql = null) {
+        $cmd =  new SQLCommand($this,$sql);
+        if($this->logger!=null) {
+            $cmd->setLogger($this->logger);
+        }
+        return $cmd;
     }
 
     //public abstract function IsConnected();
 
     public abstract function PrepareString($input);
     public abstract function PrepareData($input);
+
+    public abstract function checkIfTableExists($table);
 
 
     // This is used by the automated query selector, to select the appropriate file from the sql folder
@@ -72,7 +80,7 @@ abstract class ADatabase {
                 return array();
             }
         } else {
-            throw new Exception("Database Error Code ".$link->errno.": ".$link->error);
+            throw new Exception("Database Error Code ".$this->link->errno.": ".$this->link->error);
         }
     }
 
@@ -197,6 +205,7 @@ abstract class ADatabase {
         $sql = file_get_contents($path);
         
         $cmd = new SQLCommand($this,$sql);
+        $cmd->setLogger($this->logger);
         
         return $cmd;
     }

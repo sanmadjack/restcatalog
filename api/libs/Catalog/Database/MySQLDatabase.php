@@ -2,12 +2,13 @@
 namespace Catalog\Database;
 
 use Exception;
+use \MySQLi;
 
 class MySQLDatabase extends ADatabase {
 
      public function connect($db = null) {
 
-        @$link = new MySQLi($this->server,$this->user,$this->password);
+        $link = new MySQLi($this->server,$this->user,$this->password);
         /* check connection */
         if ($link->connect_error) {
                 throw new Exception("Attempt to connect to MySQL database failed: ".$link->connect_error);
@@ -52,6 +53,11 @@ class MySQLDatabase extends ADatabase {
 
     protected function getDatabaseNameString() {
         return "mysql";
+    }
+    
+    public function checkIfTableExists($table) {
+        $result = $this->link->query("SHOW TABLES LIKE '$table'");
+        return mysql_num_rows($result) > 0;
     }
 }
 

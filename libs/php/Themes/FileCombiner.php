@@ -87,7 +87,7 @@ class FileCombiner {
             return;
         }
     }
-    public function addFiles($names) {
+    public function addFiles(array $names) {
         foreach($names as $name) {
             $this->addfile($name);
         }

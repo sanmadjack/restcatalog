@@ -2,6 +2,8 @@
 namespace Catalog\REST;
 
 class RestResource {
+    use \Psr\Log\LoggerAwareTrait;
+    
     private $regex;
     
     private $handlers = array();
@@ -27,12 +29,12 @@ class RestResource {
     }
     
     public function Matches($resource) {
-        RestController::SendDebugMessage("logic","Comparing ".$resource." against ".$this->regex);
+        $this->logger->debug("Comparing ".$resource." against ".$this->regex);
         if(preg_match($this->regex,$resource)==1) {
-            RestController::SendDebugMessage("logic","Comparison succeeded!");
+            $this->logger->debug("Comparison succeeded!");
             return true;
         } else {
-            RestController::SendDebugMessage("logic","Comparison failed!");
+            $this->logger->debug("Comparison failed!");
             return false;
         }
     }

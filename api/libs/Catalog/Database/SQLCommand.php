@@ -4,6 +4,8 @@ namespace Catalog\Database;
 use Exception;
 
 class SQLCommand implements ISQLCommand {
+    use \Psr\Log\LoggerAwareTrait;
+    
     private $db;
     public $command;
     private $parameters = array();
@@ -32,7 +34,8 @@ class SQLCommand implements ISQLCommand {
             $length = strlen($match[0]);
             $sql = substr_replace($sql,$this->parameters[$match[0]],$match[1],$length);
         }
-        Debug($sql);
+        
+        $this->logger->info($sql,array("class"=>"db"));
         return $this->db->RunStatement($sql);
     }
     

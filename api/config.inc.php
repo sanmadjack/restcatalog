@@ -4,8 +4,8 @@
 
     $host = 'localhost';
     $db = 'catalog';
-    $user = 'sanmadjack';
-    $password = 'zDUSuWrhvZWE4u3j';
+    $user = 'catalog';
+    $password = 'Bzm9FbWsxjPsceF8';
     $db_type= 'MySQL';
 
     date_default_timezone_set('America/Chicago');
