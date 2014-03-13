@@ -8,6 +8,8 @@ use Catalog\REST\RestException;
 use Catalog\Database\ADatabase;
 
 class Nuke implements IRestEventHandler {
+    use \Psr\Log\LoggerAwareTrait;
+    
     private $db;
     public function __construct(ADatabase $db) {
         $this->db = $db;

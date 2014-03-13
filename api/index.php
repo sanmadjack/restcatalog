@@ -5,6 +5,8 @@ error_reporting(E_ALL);
 
 require_once("config.inc.php");
 require_once("SplClassLoader.php");
+
+
 try {
     $loader = new SplClassLoader();
     $loader->setIncludePath("libs");
@@ -14,7 +16,12 @@ try {
     // Create logger
     $logger = new Catalog\Log\Logger();
 
+} catch(Exception $e) {
+    echo $e->getMessage();
+    exit;
+}
 
+try {
     // Set up database
     $db = new Catalog\Database\MySQLDatabase($host,$user,$password,$db);
     $db->connect();
@@ -31,24 +38,25 @@ try {
     
     // Set up the handler for /nuke/
     $resource = new Catalog\REST\RestResource('#^/nuke[/]?$#');
+    $controller->AddResource($resource);
 
     $event = new Catalog\Resources\Nuke($db);
     $resource->AddHandler("DELETE",$event);
 
-    $controller->AddResource($resource);
     
 
     // Set up the handler for /fields/
     $resource = new Catalog\REST\RestResource('#^/fields[/]?$#');
+    $controller->AddResource($resource);
     
     $event = new Catalog\Resources\Fields($db);
     $resource->AddHandler("GET",$event);
 
-    $controller->AddResource($resource);
     
     
     $controller->Process();
 } catch(Exception $e) {
+    $logger->error($e->getMessage(),array("exception",$e));
     echo $e->getMessage();
 }
 ?>

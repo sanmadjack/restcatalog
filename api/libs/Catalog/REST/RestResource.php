@@ -22,6 +22,8 @@ class RestResource {
         if(!($handler instanceof IRestEventHandler)) {
             throw new Exception("Rest resource event handler must implement IRestEventHandler");
         }
+        $handler->setLogger($this->logger);
+        
         if(!array_key_exists($method,$this->handlers)) {
             $this->handlers[$method] = array();
         }

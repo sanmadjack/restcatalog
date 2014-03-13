@@ -60,8 +60,10 @@ class RestController {
             }
             throw new RestException(404,"The requested resource was not found");
         } catch(RestException $e) {
+            $this->logger->error($e->getMessage(),array("exception",$e));
             $this->FormatErrorMessage($e);
         } catch(Exception $e) {
+            $this->logger->error($e->getMessage(),array("exception",$e));
             $this->FormatErrorMessage(new RestException(500,$e->getMessage()));
         }
     }

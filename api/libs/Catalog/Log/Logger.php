@@ -6,6 +6,7 @@ use \Exception;
 
 class Logger extends \Psr\Log\AbstractLogger {
     private $db = null;
+    // TODO: Implement log level control
     
     
     public function log($level, $message, array $context = array()) {

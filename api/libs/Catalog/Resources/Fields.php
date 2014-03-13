@@ -8,6 +8,8 @@ use Catalog\REST\RestException;
 use Catalog\Database\ADatabase;
 
 class Fields implements IRestEventHandler {
+    use \Psr\Log\LoggerAwareTrait;
+    
     private $db;
     public function __construct(ADatabase $db) {
         $this->db = $db;
@@ -15,12 +17,22 @@ class Fields implements IRestEventHandler {
     public function Trigger(RestRequest $req,RestResponse $res) {
         switch($req->method) {
             case "GET":
-                throw new RestException(405,"I hate you!");
+                $this->get($req,$res);
+                
                 break;
             default:
-                throw new RestException(405,$req->method." not supported");
+                $res->sendNotSupported($req);
+                break;
         }
-        $res->SetCode(200);
+    }
+    
+    private function get(RestRequest $req,RestResponse $res) {
+        $cmd = $this->db->createCommandFromFile("select","fields");
+        $output = $cmd->run();
+        if(sizeof($output)==0) {
+            $this->logger->info("No fields found");
+        }
+        $res->writeJSON($output);
     }
     
 } 
