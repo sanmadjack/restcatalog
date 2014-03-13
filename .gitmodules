@@ -1,3 +1,0 @@
-[submodule "api/libs/log"]
-	path = api/libs/log
-	url = https://github.com/php-fig/log.git

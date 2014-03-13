@@ -1,10 +1,9 @@
 <?php
 namespace Catalog\REST;
 
-// Load dependencies
-require_once('RestResource.php');
-require_once('RestException.php');
-require_once('RestResponse.php');
+use Exception;
+
+$GLOBALS['start_time'] = microtime(true);
 
 class RestController {
     private $method;
@@ -12,6 +11,8 @@ class RestController {
     private $resource;
     
     private $resources = array();
+    
+    public $version = null;
     
     public function __construct($format) { 
         $this->method = $_SERVER['REQUEST_METHOD'];
@@ -30,7 +31,7 @@ class RestController {
         }
     } 
     
-    public function AddResource($resource) {
+    public function AddResource(RestResource $resource) {
         if(!($resource instanceof RestResource)) {
             throw new Exception("Resource must be a RestResource object");
         }
@@ -39,7 +40,6 @@ class RestController {
     
     
     public function Process() {
-        $GLOBALS['start_time'] = microtime(true);
         try {
             if($this->format=="json") {
                 header("Content-type:application/json",true);
@@ -68,9 +68,14 @@ class RestController {
 
     }
     
-    private function FormatErrorMessage($e) {
+    private function FormatErrorMessage(Exception $e) {
         self::SetDebugHeaders();
         self::SetResponseCode($e->code);
+        
+        if($this->version!=null) {
+            Header("X-Version: ".$this->version);
+        }
+        
         if($this->format=="json") {
             $output = array();
             $error = array();

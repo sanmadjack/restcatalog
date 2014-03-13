@@ -1,8 +1,6 @@
 <?php
 namespace Catalog\REST;
 
-require_once("RestRequest.php");
-
 class RestResource {
     private $regex;
     
@@ -14,7 +12,7 @@ class RestResource {
     
     private static $methods = array("OPTIONS","GET","HEAD","POST","PUT","DELETE","TRACE","CONNECT","PATCH");
     
-    public function AddHandler($method,$handler) {
+    public function AddHandler($method,IRestEventHandler $handler) {
         if(!in_array($method,self::$methods)) {
             throw new Exception("The specified method is not valid: ".$method);
         }
@@ -39,7 +37,7 @@ class RestResource {
         }
     }
     
-    public function Trigger($method,$path,$response) {
+    public function Trigger($method,$path,RestResponse $response) {
         if($method=="OPTIONS") {
             $this->SendAllowedMethods();
             return;

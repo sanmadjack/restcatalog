@@ -2,7 +2,7 @@
 namespace Catalog\REST;
 
 interface IRestEventHandler {
-    public function Trigger($req,$res);
+    public function Trigger(RestRequest $req,RestResponse $res);
 }
 
 

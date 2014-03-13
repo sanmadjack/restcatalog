@@ -5,14 +5,16 @@ use Exception;
 
 // A class for automating the combining of text-based web site resources, such as CSS or JavaScript files.
 // This allows keeping source files very organized, while still having most of the benefit of requesting 
-// only a single file from a web page.
+// only a single file from a web page. It is designed to only work with specific formats.
 // TODO: Add support for binary files
+// TODO: charset stuff, get that utf-8 on
 class FileCombiner {
     private $files = array();
     
     private $mime = null;
     private $extension;
     private $last_modified;
+    private $charset = null;
     
     public $binary_mode = "replace";
     
@@ -151,7 +153,11 @@ class FileCombiner {
     }
     
     private function writeHeaders($code = null) {
-        header("Content-type: ".$this->mime);
+        if($this->charset==null) {
+            header("Content-type: ".$this->mime);
+        } else {
+            header("Content-type: ".$this->mime."; charset=".$this->charset);
+        }
         header('Cache-Control: public, must-revalidate');
         header("Last-Modified: ".gmdate('r',$this->last_modified));
         //header('ETag: "'.md5($output).'"'); // modification time is good enough for now, need to keep this speedy
