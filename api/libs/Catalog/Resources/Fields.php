@@ -28,11 +28,32 @@ class Fields implements IRestEventHandler {
     
     private function get(RestRequest $req,RestResponse $res) {
         $cmd = $this->db->createCommandFromFile("select","fields");
-        $output = $cmd->run();
-        if(sizeof($output)==0) {
+        $data = $cmd->run();
+        if(sizeof($data)==0) {
             $this->logger->info("No fields found");
         }
+        
+        $output = array();
+        $output["schema"] = $this->createSchema();
+        $output["data"] = $data;
+        
         $res->writeJSON($output);
+    }
+    
+    private function createSchema() {
+        $output = array();
+        
+        $output['$schema'] = "http://json-schema.org/draft-04/schema#";
+        
+        $output["title"] = "Field";
+        $output["description"] = "A field to be used in a class";
+        
+        $output["type"] = "object";
+        
+        $output["properties"] = array();
+        
+        // Array of field names
+        $output["required"] = array();
     }
     
 } 

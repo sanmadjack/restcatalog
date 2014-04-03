@@ -1,0 +1,19 @@
+{
+    "id": "http://catalog.darkholme.net/api/json/schemas/catalog.json#",
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "Catalog input schema",
+    "description": "Schema describing data for sending to the catalog API",
+    "type": "object",
+    "properties": {
+        "id": {
+            "type": "integer"
+        },
+        "name": {
+            "type": "string"
+        },
+        "display": {
+            "type": "string"
+        },
+        "data_type": 
+    }
+}

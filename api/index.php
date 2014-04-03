@@ -35,6 +35,14 @@ try {
     $controller->setLogger($logger);
     $controller->version = "1";
 
+
+    // Set up the handler for /
+    $resource = new Catalog\REST\RestResource('#^/$#');
+    $controller->AddResource($resource);
+
+    $event = new Catalog\Resources\Root();
+    $resource->AddHandler("GET",$event);
+
     
     // Set up the handler for /nuke/
     $resource = new Catalog\REST\RestResource('#^/nuke[/]?$#');

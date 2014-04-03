@@ -1,14 +1,14 @@
 <?php
 namespace Catalog\Resources;
 
-use Catalog\REST\IRestEventHandler;
+use Catalog\REST\ARestEventHandler;
 use Catalog\REST\RestResponse;
 use Catalog\REST\RestRequest;
 use Catalog\REST\RestException;
 use Catalog\Database\ADatabase;
 
-class Nuke implements IRestEventHandler {
-    use \Psr\Log\LoggerAwareTrait;
+class Nuke extends ARestEventHandler {
+    
     
     private $db;
     public function __construct(ADatabase $db) {
@@ -22,7 +22,7 @@ class Nuke implements IRestEventHandler {
                 $this->createAllTables();
                 break;
             default:
-                throw new RestException(405,$req->method." not supported");
+                $this->methodNotSupported($req,$res);
         }
         $res->SetCode(200);
     }
@@ -49,6 +49,21 @@ class Nuke implements IRestEventHandler {
         $cmd->run();
         $cmd = $this->db->createCommandFromFile("create","settings");
         $cmd->run();
+    }
+    
+    public function generateLinks() {
+        return self::generateLinksStatic();
+    } 
+    
+    static public function generateLinksStatic() {
+        $output = array();
+
+        $link = new JsonSchemaLink("nuke","/nuke/");
+        $link->setMethod("DELETE");
+        $link->setTitle("Reset the database to initial state");
+        $output[] = $link;
+        
+        return $output;
     }
 }
 ?>
